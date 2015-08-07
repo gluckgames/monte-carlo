@@ -1,0 +1,20 @@
+{
+  "name": "monte-carlo",
+  "version": "0.0.1",
+  "description": "Monte Carlo simulator for real money games",
+  "author": "Gamevy",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": "https://github.com/Gamevy/monte-carlo",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "progress": "^1.1.8",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.0"
+  }
+}
