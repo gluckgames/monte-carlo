@@ -4,6 +4,8 @@ This is a oppinonated framework for calculating chances of outcomes for games ba
 
 It's especially useful for games that combine chance elements with skill (like quizzes) and real money gambling and have rules that make it hard to work out the results mathematically.
 
+Uses ES6 and is therefore Node >4.0.0 only.
+
 ## Features
 
 * Optimised for speed
@@ -16,7 +18,7 @@ It's especially useful for games that combine chance elements with skill (like q
 What's the chance of answering N questions correctly in a row if there's a 5% chance of hitting a question that's impossible to answer?
 
 ```javascript
-#!/usr/bin/env babel-node
+#!/usr/bin/env node
 
 import MonteCarlo from "monte-carlo";
 import _ from "underscore";
@@ -113,6 +115,3 @@ payout: £0.14 per game, £50.00 per won game (29 won games), total of £1450.00
 ```
 
 In other words: The game tested isn't a great real money game.
-
-## Contribution
-Written in ES6, so please make sure you're running gulp before commiting your changes

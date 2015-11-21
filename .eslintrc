@@ -1,0 +1,18 @@
+{
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "rules": {
+        "quotes": [1, "double"],
+        "no-undef": [2],
+        "no-underscore-dangle": [0], /* 'private' class members */
+        "no-multi-spaces": [0],
+        "no-spaced-func": [0],
+        "no-multiple-empty-lines": [2],
+        "no-trailing-spaces": [2],
+        "max-statements": [2, 22],
+        "complexity": [2, 8]
+    },
+    "extends": "eslint:recommended",
+}

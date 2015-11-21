@@ -1,16 +1,17 @@
-#!/usr/bin/env babel-node
+#!/usr/bin/env node
+"use strict";
 
-import MonteCarlo from "./index.js"; // Use "monte-carlo" outside this repo
-import _ from "underscore";
+let MonteCarlo = require("./index.js"); // Use "monte-carlo" outside this repo
+let _ = require("underscore");
 
 class ImpossibleQuizSimulator extends MonteCarlo.Simulator {
-    before(results, rules) {
+    before(results) {
         results.add("wins", new MonteCarlo.Results.Counter());
         results.add("payout", new MonteCarlo.Results.PayoutCounter());
     }
 
     createGameState(rules) {
-        var questions = _.map(_.range(rules.questions), function() {
+        let questions = _.map(_.range(rules.questions), function() {
             return {possible: Math.random() > rules.chanceOfImpossibleQuestion};
         });
 
@@ -20,10 +21,10 @@ class ImpossibleQuizSimulator extends MonteCarlo.Simulator {
     }
 
     game(rules, gameState, results, skillOutcome) {
-        var lost = false;
+        let lost = false;
 
         while (!lost && gameState.questions.length) {
-            var question = gameState.questions.pop();
+            let question = gameState.questions.pop();
             if (!question.possible || !skillOutcome()) {
                 lost = true;
             }
@@ -36,7 +37,7 @@ class ImpossibleQuizSimulator extends MonteCarlo.Simulator {
     }
 }
 
-var simulator = new ImpossibleQuizSimulator({ N: 10000 });
+let simulator = new ImpossibleQuizSimulator({ N: 10000 });
 
 simulator.run("10 questions", {
     chanceOfImpossibleQuestion: 0.05,

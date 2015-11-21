@@ -1,10 +1,10 @@
 module.exports = {
-    Simulator: require("./src/Simulator"),
+    Simulator: require("./lib/Simulator"),
     Results: {
-        Generic: require("./src/result/Generic"),
-        Counter: require("./src/result/Counter"),
-        PayoutCounter: require("./src/result/PayoutCounter"),
-        MapCounter: require("./src/result/MapCounter"),
-        MapPayoutCounter: require("./src/result/MapPayoutCounter")
+        Generic: require("./lib/result/Generic"),
+        Counter: require("./lib/result/Counter"),
+        PayoutCounter: require("./lib/result/PayoutCounter"),
+        MapCounter: require("./lib/result/MapCounter"),
+        MapPayoutCounter: require("./lib/result/MapPayoutCounter")
     }
 };

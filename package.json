@@ -7,14 +7,19 @@
   "main": "index.js",
   "repository": "https://github.com/Gamevy/monte-carlo",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "eslint lib test example.js index.js",
+    "test": "mocha --recursive test"
   },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "engine-strict": true,
   "dependencies": {
-    "progress": "^1.1.8",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-babel": "^5.2.0"
+    "chai": "^3.4.1",
+    "eslint": "^1.10.1",
+    "mocha": "^2.3.4"
   }
 }
