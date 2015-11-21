@@ -1,5 +1,9 @@
 # Monte Carlo simulator for real money games
 
+[![Build Status](https://travis-ci.org/Gamevy/monte-carlo.svg?branch=master)](https://travis-ci.org/Gamevy/monte-carlo)
+[![Dependency Status](https://david-dm.org/Gamevy/monte-carlo.svg)](https://david-dm.org/marekventur/dependency-updater)
+[![devDependency Status](https://david-dm.org/Gamevy/monte-carlo/dev-status.svg)](https://david-dm.org/marekventur/dependency-updater#info=devDependencies)
+
 This is a oppinonated framework for calculating chances of outcomes for games based on a simulation. This can be used to model rules and paytables a test them for win rates and average player return.
 
 It's especially useful for games that combine chance elements with skill (like quizzes) and real money gambling and have rules that make it hard to work out the results mathematically.
