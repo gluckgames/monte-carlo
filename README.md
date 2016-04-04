@@ -16,6 +16,7 @@ Uses ES6 and is therefore Node >4.0.0 only.
 * Simulates different skill levels (By default 50%, 75% and 100% correct)
 * Build-in support for collections and presenting results
 * Progress indicator
+* Exposed RNG operations (```randomDouble()```, ```random(min, max)``` and ```shuffle(list)```) based on Mersenne Twister for better randomness
 
 ## Example
 
@@ -23,19 +24,20 @@ What's the chance of answering N questions correctly in a row if there's a 5% ch
 
 ```javascript
 #!/usr/bin/env node
+"use strict";
 
-import MonteCarlo from "monte-carlo";
-import _ from "underscore";
+let MonteCarlo = require("./index.js"); // Use "monte-carlo" outside this repo
+let _ = require("underscore");
 
 class ImpossibleQuizSimulator extends MonteCarlo.Simulator {
-    before(results, rules) {
+    before(results) {
         results.add("wins", new MonteCarlo.Results.Counter());
         results.add("payout", new MonteCarlo.Results.PayoutStandardDeviationCounter());
     }
 
     createGameState(rules) {
-        var questions = _.map(_.range(rules.questions), function() {
-            return {possible: Math.random() > rules.chanceOfImpossibleQuestion};
+        let questions = _.map(_.range(rules.questions), () => {
+            return {possible: this.randomDouble() > rules.chanceOfImpossibleQuestion};
         });
 
         return {
@@ -44,35 +46,48 @@ class ImpossibleQuizSimulator extends MonteCarlo.Simulator {
     }
 
     game(rules, gameState, results, skillOutcome) {
-        var lost = false;
+        let lost = false;
 
         while (!lost && gameState.questions.length) {
-            var question = gameState.questions.pop();
+            let question = gameState.questions.pop();
             if (!question.possible || !skillOutcome()) {
                 lost = true;
             }
         }
 
         if (!lost) {
-            results.payout.increase(rules.amountToBeWon);
+            if (rules.amountsToBeWon) {
+                results.payout.increase(this.shuffle(rules.amountsToBeWon)[0]);
+            } else {
+                results.payout.increase(this.random(rules.amountToBeWonMin, rules.amountToBeWonMax));
+            }
             results.wins.increase();
         }
     }
 }
 
-var simulator = new ImpossibleQuizSimulator({ N: 10000 });
+let simulator = new ImpossibleQuizSimulator({ N: 10000 });
 
 simulator.run("10 questions", {
     chanceOfImpossibleQuestion: 0.05,
     questions: 10,
-    amountToBeWon: 100
+    amountToBeWonMin: 50,
+    amountToBeWonMax: 100
 });
 
 simulator.run("8 questions", {
     chanceOfImpossibleQuestion: 0.05,
     questions: 8,
-    amountToBeWon: 50
+    amountToBeWonMin: 25,
+    amountToBeWonMax: 50
 });
+
+simulator.run("8 questions, fixed amounts", {
+    chanceOfImpossibleQuestion: 0.05,
+    questions: 8,
+    amountsToBeWon: [1, 10, 25, 50, 100]
+});
+
 
 ```
 
@@ -80,42 +95,62 @@ Result:
 ```
 ==== 10 questions ====
 N = 10000
-speed: 13850games/sec, total 0.722sec
+speed: 8475games/sec, total 1.18sec
 
 == Skill Level: 100% ==
 
-wins: 6078 (60.78%) - 1 in 1.65
-payout: £60.78 per game, £100.00 per won game (6078 won games), total of £607800.00 (STDDEV: £42.95)
+wins: 6014 (60.14%) - 1 in 1.66
+payout: £45.15 per game, £75.07 per won game (6014 won games), total of £451483.00 (STDDEV: £34.88)
 
 == Skill Level: 75% ==
 
-wins: 344 (3.44%) - 1 in 29.07
-payout: £3.44 per game, £100.00 per won game (344 won games), total of £34400.00 (STDDEV: £24.92)
+wins: 318 (3.18%) - 1 in 31.45
+payout: £2.42 per game, £75.95 per won game (318 won games), total of £24151.00 (STDDEV: £18.65)
 
 == Skill Level: 50% ==
 
-wins: 4 (0.04%) - 1 in 2500.00
-payout: £0.04 per game, £100.00 per won game (4 won games), total of £400.00 (STDDEV: £2.83)
+wins: 3 (0.03%) - 1 in 3333.33
+payout: £0.02 per game, £67.00 per won game (3 won games), total of £201.00 (STDDEV: £1.68)
 
 
 ==== 8 questions ====
 N = 10000
-speed: 13550games/sec, total 0.738sec
+speed: 13316games/sec, total 0.751sec
 
 == Skill Level: 100% ==
 
-wins: 6604 (66.04%) - 1 in 1.51
-payout: £33.02 per game, £50.00 per won game (6604 won games), total of £330200.00 (STDDEV: £20.17)
+wins: 6534 (65.34%) - 1 in 1.53
+payout: £24.44 per game, £37.40 per won game (6534 won games), total of £244376.00 (STDDEV: £16.65)
 
 == Skill Level: 75% ==
 
-wins: 655 (6.55%) - 1 in 15.27
-payout: £3.27 per game, £50.00 per won game (655 won games), total of £32750.00 (STDDEV: £16.42)
+wins: 647 (6.47%) - 1 in 15.46
+payout: £2.45 per game, £37.92 per won game (647 won games), total of £24535.00 (STDDEV: £12.68)
 
 == Skill Level: 50% ==
 
-wins: 25 (0.25%) - 1 in 400.00
-payout: £0.13 per game, £50.00 per won game (25 won games), total of £1250.00 (STDDEV: £3.52)
+wins: 30 (0.30%) - 1 in 333.33
+payout: £0.11 per game, £38.03 per won game (30 won games), total of £1141.00 (STDDEV: £2.99)
+
+
+==== 8 questions, fixed amounts ====
+N = 10000
+speed: 14472games/sec, total 0.691sec
+
+== Skill Level: 100% ==
+
+wins: 6655 (66.55%) - 1 in 1.50
+payout: £25.24 per game, £37.92 per won game (6655 won games), total of £252381.00 (STDDEV: £35.35)
+
+== Skill Level: 75% ==
+
+wins: 689 (6.89%) - 1 in 14.51
+payout: £2.56 per game, £37.16 per won game (689 won games), total of £25602.00 (STDDEV: £17.83)
+
+== Skill Level: 50% ==
+
+wins: 26 (0.26%) - 1 in 384.62
+payout: £0.08 per game, £30.58 per won game (26 won games), total of £795.00 (STDDEV: £2.92)
 ```
 
 In other words: The game tested isn't a great real money game.

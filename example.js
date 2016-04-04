@@ -11,8 +11,8 @@ class ImpossibleQuizSimulator extends MonteCarlo.Simulator {
     }
 
     createGameState(rules) {
-        let questions = _.map(_.range(rules.questions), function() {
-            return {possible: Math.random() > rules.chanceOfImpossibleQuestion};
+        let questions = _.map(_.range(rules.questions), () => {
+            return {possible: this.randomDouble() > rules.chanceOfImpossibleQuestion};
         });
 
         return {
@@ -31,7 +31,11 @@ class ImpossibleQuizSimulator extends MonteCarlo.Simulator {
         }
 
         if (!lost) {
-            results.payout.increase(rules.amountToBeWon);
+            if (rules.amountsToBeWon) {
+                results.payout.increase(this.shuffle(rules.amountsToBeWon)[0]);
+            } else {
+                results.payout.increase(this.random(rules.amountToBeWonMin, rules.amountToBeWonMax));
+            }
             results.wins.increase();
         }
     }
@@ -42,11 +46,19 @@ let simulator = new ImpossibleQuizSimulator({ N: 10000 });
 simulator.run("10 questions", {
     chanceOfImpossibleQuestion: 0.05,
     questions: 10,
-    amountToBeWon: 100
+    amountToBeWonMin: 50,
+    amountToBeWonMax: 100
 });
 
 simulator.run("8 questions", {
     chanceOfImpossibleQuestion: 0.05,
     questions: 8,
-    amountToBeWon: 50
+    amountToBeWonMin: 25,
+    amountToBeWonMax: 50
+});
+
+simulator.run("8 questions, fixed amounts", {
+    chanceOfImpossibleQuestion: 0.05,
+    questions: 8,
+    amountsToBeWon: [1, 10, 25, 50, 100]
 });
