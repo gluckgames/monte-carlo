@@ -7,7 +7,7 @@ let _ = require("underscore");
 class ImpossibleQuizSimulator extends MonteCarlo.Simulator {
     before(results) {
         results.add("wins", new MonteCarlo.Results.Counter());
-        results.add("payout", new MonteCarlo.Results.PayoutCounter());
+        results.add("payout", new MonteCarlo.Results.PayoutStandardDeviationCounter());
     }
 
     createGameState(rules) {

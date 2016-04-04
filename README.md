@@ -30,7 +30,7 @@ import _ from "underscore";
 class ImpossibleQuizSimulator extends MonteCarlo.Simulator {
     before(results, rules) {
         results.add("wins", new MonteCarlo.Results.Counter());
-        results.add("payout", new MonteCarlo.Results.PayoutCounter());
+        results.add("payout", new MonteCarlo.Results.PayoutStandardDeviationCounter());
     }
 
     createGameState(rules) {
@@ -80,42 +80,42 @@ Result:
 ```
 ==== 10 questions ====
 N = 10000
-speed: 25773games/sec, total 0.388sec
+speed: 13850games/sec, total 0.722sec
 
 == Skill Level: 100% ==
 
-wins: 5980 (59.80%) - 1 in 1.67
-payout: £59.80 per game, £100.00 per won game (5980 won games), total of £598000.00
+wins: 6078 (60.78%) - 1 in 1.65
+payout: £60.78 per game, £100.00 per won game (6078 won games), total of £607800.00 (STDDEV: £42.95)
 
 == Skill Level: 75% ==
 
-wins: 337 (3.37%) - 1 in 29.67
-payout: £3.37 per game, £100.00 per won game (337 won games), total of £33700.00
+wins: 344 (3.44%) - 1 in 29.07
+payout: £3.44 per game, £100.00 per won game (344 won games), total of £34400.00 (STDDEV: £24.92)
 
 == Skill Level: 50% ==
 
-wins: 6 (0.06%) - 1 in 1666.67
-payout: £0.06 per game, £100.00 per won game (6 won games), total of £600.00
+wins: 4 (0.04%) - 1 in 2500.00
+payout: £0.04 per game, £100.00 per won game (4 won games), total of £400.00 (STDDEV: £2.83)
 
 
 ==== 8 questions ====
 N = 10000
-speed: 34965games/sec, total 0.286sec
+speed: 13550games/sec, total 0.738sec
 
 == Skill Level: 100% ==
 
-wins: 6629 (66.29%) - 1 in 1.51
-payout: £33.15 per game, £50.00 per won game (6629 won games), total of £331450.00
+wins: 6604 (66.04%) - 1 in 1.51
+payout: £33.02 per game, £50.00 per won game (6604 won games), total of £330200.00 (STDDEV: £20.17)
 
 == Skill Level: 75% ==
 
-wins: 681 (6.81%) - 1 in 14.68
-payout: £3.40 per game, £50.00 per won game (681 won games), total of £34050.00
+wins: 655 (6.55%) - 1 in 15.27
+payout: £3.27 per game, £50.00 per won game (655 won games), total of £32750.00 (STDDEV: £16.42)
 
 == Skill Level: 50% ==
 
-wins: 29 (0.29%) - 1 in 344.83
-payout: £0.14 per game, £50.00 per won game (29 won games), total of £1450.00
+wins: 25 (0.25%) - 1 in 400.00
+payout: £0.13 per game, £50.00 per won game (25 won games), total of £1250.00 (STDDEV: £3.52)
 ```
 
 In other words: The game tested isn't a great real money game.

@@ -15,6 +15,7 @@
   },
   "engine-strict": true,
   "dependencies": {
+    "stats-lite": "^2.0.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

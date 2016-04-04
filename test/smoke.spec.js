@@ -8,6 +8,7 @@ class TestSimulator extends MonteCarlo.Simulator {
     before(results) {
         results.add("wins", new MonteCarlo.Results.Counter());
         results.add("payout", new MonteCarlo.Results.PayoutCounter());
+        results.add("payoutStDev", new MonteCarlo.Results.PayoutStandardDeviationCounter());
     }
 
     createGameState(rules) {
@@ -32,6 +33,7 @@ class TestSimulator extends MonteCarlo.Simulator {
 
         if (!lost) {
             results.payout.increase(rules.amountToBeWon);
+            results.payoutStDev.increase(rules.amountToBeWon);
             results.wins.increase();
         }
     }
@@ -60,7 +62,7 @@ describe("Smoke test", () => {
     });
 
     it("does a normal run without percent skill level", () => {
-        let simulator = new TestSimulator({ N: 10000, skillLevelInPercents: false });
+        let simulator = new TestSimulator({ N: 1, skillLevelInPercents: false });
 
         simulator.game = (rules, gameState, results, skill) => {
             expect(typeof skill).to.equal("number");
